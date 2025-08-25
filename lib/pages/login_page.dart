@@ -61,14 +61,30 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                FilledButton(
-                  style: ButtonStyle(
-                    padding: ButtonState.all(
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FilledButton(
+                      style: ButtonStyle(
+                        padding: ButtonState.all(
+                          const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        ),
+                      ),
+                      onPressed: login,
+                      child: const Text('Login'),
                     ),
-                  ),
-                  onPressed: login,
-                  child: const Text('Login'),
+                    const SizedBox(width: 10),
+                    // TODO: Move into its own page
+                    FilledButton(
+                      style: ButtonStyle(
+                        padding: ButtonState.all(
+                          const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        ),
+                      ),
+                      onPressed: register,
+                      child: const Text('Register'),
+                    ),
+                  ],
                 ),
               ],
             ),
