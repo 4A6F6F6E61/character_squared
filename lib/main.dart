@@ -4,8 +4,14 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:character_squared/router.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
+  await dotenv.load();
+
+  await Supabase.initialize(anonKey: dotenv.env['SUPABASE_KEY']!, url: dotenv.env['SUPABASE_URL']!);
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Window.initialize();
@@ -39,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       theme: FluentThemeData(
         brightness: Brightness.dark,
         // Important if you want to use a Scaffold and have Flutter Acrylic's effects
-        scaffoldBackgroundColor: Colors.transparent,
+        scaffoldBackgroundColor: Color(0x00000000),
       ),
       routerConfig: router,
     );
