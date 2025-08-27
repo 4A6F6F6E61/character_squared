@@ -1,5 +1,7 @@
+import 'package:character_squared/components/fluent_bottom_navigation.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:fluent_window/fluent_window.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' as m;
 import 'package:go_router/go_router.dart';
 
 class TabNavigator extends StatefulWidget {
@@ -12,9 +14,23 @@ class TabNavigator extends StatefulWidget {
 }
 
 class _TabNavigatorState extends State<TabNavigator> {
+  int index = 0;
   @override
   Widget build(BuildContext context) {
-    // TODO: Add bottom navigation bar
-    return FluentWindow(child: widget.navigationShell);
+    return FluentWindow(
+      child: Column(
+        children: [
+          Expanded(child: widget.navigationShell),
+          FluentBottomNavigation(
+            index: index,
+            onClick: (v) => setState(() => index = v),
+            items: [
+              BottomNavigationItem(title: Text("Home"), icon: Icon(FluentIcons.home)),
+              BottomNavigationItem(title: Text("Settings"), icon: Icon(FluentIcons.settings)),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

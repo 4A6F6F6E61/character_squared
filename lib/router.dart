@@ -1,6 +1,7 @@
 import 'package:character_squared/db.dart';
 import 'package:character_squared/pages/login_page.dart';
 import 'package:character_squared/pages/tab_navigator.dart';
+import 'package:character_squared/pages/tabs/home.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:fluent_window/fluent_window.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +25,7 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/auth',
-      redirect: (_, __) => '/auth/login',
+      redirect: (_, _) => '/auth/login',
       routes: [
         GoRoute(
           path: '/login',
@@ -43,22 +44,7 @@ final router = GoRouter(
       },
       branches: [
         StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/tabs/home',
-              builder: (_, _) => Row(
-                children: [
-                  Text("Hom Page"),
-                  Button(
-                    child: Text("Logout"),
-                    onPressed: () async {
-                      await auth.signOut();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
+          routes: [GoRoute(path: '/tabs/home', builder: (_, _) => const Home())],
         ),
       ],
     ),

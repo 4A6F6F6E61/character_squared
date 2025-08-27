@@ -24,8 +24,9 @@ Future<void> main() async {
 
   doWhenWindowReady(() {
     appWindow
-      ..minSize = Size(360, 640)
-      ..size = Size(800, 1300)
+      ..minSize = Size(160, 540)
+      ..size = Size(400, 840)
+      ..alignment = Alignment.centerRight
       ..show();
   });
 }
