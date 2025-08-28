@@ -27,6 +27,7 @@ class _TabNavigatorState extends State<TabNavigator> {
   @override
   Widget build(BuildContext context) {
     return FluentWindow(
+      title: "CharacterSquared",
       child: SafeArea(
         child: Column(
           children: [

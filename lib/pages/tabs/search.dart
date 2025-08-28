@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -8,8 +8,22 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  final searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return const Text("Search");
+    return Column(
+      children: [
+        Card(
+          borderColor: Colors.transparent,
+          child: TextFormBox(
+            autocorrect: true,
+            autofocus: false,
+            controller: searchController,
+            maxLines: 1,
+            placeholder: "Search...",
+          ),
+        ),
+      ],
+    );
   }
 }
