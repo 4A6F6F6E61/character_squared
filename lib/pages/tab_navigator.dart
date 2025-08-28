@@ -1,7 +1,8 @@
 import 'package:character_squared/components/fluent_bottom_navigation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:fluent_window/fluent_window.dart';
-import 'package:flutter/material.dart' as m;
+import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:flutter_acrylic/window_effect.dart';
 import 'package:go_router/go_router.dart';
 
 class TabNavigator extends StatefulWidget {
@@ -15,21 +16,35 @@ class TabNavigator extends StatefulWidget {
 
 class _TabNavigatorState extends State<TabNavigator> {
   int index = 0;
+
+  void _goBranch(int index) {
+    widget.navigationShell.goBranch(
+      index,
+      initialLocation: index == widget.navigationShell.currentIndex,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FluentWindow(
-      child: Column(
-        children: [
-          Expanded(child: widget.navigationShell),
-          FluentBottomNavigation(
-            index: index,
-            onClick: (v) => setState(() => index = v),
-            items: [
-              BottomNavigationItem(title: Text("Home"), icon: Icon(FluentIcons.home)),
-              BottomNavigationItem(title: Text("Settings"), icon: Icon(FluentIcons.settings)),
-            ],
-          ),
-        ],
+      child: SafeArea(
+        child: Column(
+          children: [
+            Expanded(child: widget.navigationShell),
+            FluentBottomNavigation(
+              index: index,
+              onClick: (v) async {
+                setState(() => index = v);
+                _goBranch(v);
+              },
+              items: [
+                FluentBottomNavigationItem(label: "Home", icon: FluentIcons.home_solid),
+                FluentBottomNavigationItem(label: "Search", icon: FluentIcons.search),
+                FluentBottomNavigationItem(label: "Profile", icon: FluentIcons.account_management),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

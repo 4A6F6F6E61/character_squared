@@ -188,12 +188,11 @@ packages:
   fluent_window:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "5d3718d431b070967dbdd4b202149a05b1d257bd"
-      url: "https://github.com/4A6F6F6E61/fluent_window.git"
-    source: git
-    version: "0.1.0"
+      name: fluent_window
+      sha256: e60c2c07ab438cff0c52a3b128e1beb6a7c46bea9abb560fdab47a1c52b64c15
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6"
   flutter:
     dependency: "direct main"
     description: flutter
