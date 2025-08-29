@@ -23,6 +23,7 @@ dependencies:
   supabase_flutter: ^2.9.1
   flutter_dotenv: ^6.0.0
   tmdb_api: ^2.2.3
+  tmdb_api_kit: ^1.0.0
 
 dev_dependencies:
   flutter_test:

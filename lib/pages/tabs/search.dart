@@ -1,8 +1,12 @@
-import 'dart:developer';
+// ignore_for_file: implementation_imports
 
+import 'dart:developer' as dev;
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:character_squared/db.dart';
-import 'package:character_squared/models/search_result.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:tmdb_api_kit/src/models/movie_summary_model.dart';
+import 'package:tmdb_api_kit/src/models/popular_movie_response.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -14,7 +18,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final searchController = TextEditingController();
 
-  List results = [];
+  PaginatedResponse<MovieSummaryModel> results = PaginatedResponse(results: []);
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +33,32 @@ class _SearchState extends State<Search> {
             maxLines: 1,
             placeholder: "Search...",
             onFieldSubmitted: (value) async {
-              final query = await tmdb.v3.search.queryMulti(value, includeAdult: true);
+              final r = await tmdb.searchMovies(query: value);
 
               setState(() {
-                results = query["results"] as List;
+                results = r;
               });
-              inspect(results[0]);
-              final test = SearchResult(results[0]);
-              inspect(test);
+            },
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: results.results.length,
+            itemBuilder: (_, i) {
+              final result = results.results[i];
+
+              return ListTile(
+                leading: SizedBox(
+                  height: 100,
+                  child: AspectRatio(
+                    aspectRatio: 9 / 16,
+                    child: CachedNetworkImage(imageUrl: imageUrl(result.posterPath ?? "")),
+                  ),
+                ),
+                title: Text(result.title ?? "ERROR"),
+                subtitle: Text("${result.releaseDate?.year}"),
+                onPressed: () {},
+              );
             },
           ),
         ),

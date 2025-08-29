@@ -778,6 +778,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.3"
+  tmdb_api_kit:
+    dependency: "direct main"
+    description:
+      name: tmdb_api_kit
+      sha256: "1b3fb2fe049e9ed91212919ea8537c5c4819ab6c4afd7c6a44b52a2a1c347606"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   typed_data:
     dependency: transitive
     description:
