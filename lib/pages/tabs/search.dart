@@ -4,7 +4,9 @@ import 'dart:developer' as dev;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:character_squared/db.dart';
+import 'package:character_squared/pages/details_view.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tmdb_api_kit/src/models/movie_summary_model.dart';
 import 'package:tmdb_api_kit/src/models/popular_movie_response.dart';
 
@@ -57,7 +59,12 @@ class _SearchState extends State<Search> {
                 ),
                 title: Text(result.title ?? "ERROR"),
                 subtitle: Text("${result.releaseDate?.year}"),
-                onPressed: () {},
+                onPressed: () {
+                  final id = result.id;
+
+                  dev.log("$id");
+                  context.go("/tabs/search/details", extra: {"id": id, "mType": MediaType.film});
+                },
               );
             },
           ),

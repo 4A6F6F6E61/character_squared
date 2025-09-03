@@ -1,16 +1,19 @@
+import 'dart:developer' as dev;
+
 import 'package:character_squared/db.dart';
+import 'package:character_squared/pages/details_view.dart';
 import 'package:character_squared/pages/login_page.dart';
 import 'package:character_squared/pages/tab_navigator.dart';
 import 'package:character_squared/pages/tabs/account.dart';
 import 'package:character_squared/pages/tabs/home.dart';
 import 'package:character_squared/pages/tabs/search.dart';
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:fluent_window/fluent_window.dart';
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
   initialLocation: '/auth/login',
   refreshListenable: authListener,
+  debugLogDiagnostics: true,
   redirect: (context, state) {
     final loggedIn = auth.currentUser != null;
 
@@ -49,7 +52,24 @@ final router = GoRouter(
           routes: [GoRoute(path: '/tabs/home', builder: (_, _) => const Home())],
         ),
         StatefulShellBranch(
-          routes: [GoRoute(path: '/tabs/search', builder: (_, _) => const Search())],
+          routes: [
+            GoRoute(
+              path: '/tabs/search',
+              builder: (_, _) => const Search(),
+              routes: [
+                // Path & QueryParameters do not work or some reason, so I will just use extra
+                GoRoute(
+                  path: "/details",
+                  builder: (context, state) {
+                    final extra = GoRouterState.of(context).extra! as Map<String, dynamic>;
+                    final int id = extra["id"];
+                    final MediaType mType = extra["mType"];
+                    return DetailsView(id: id, mType: mType);
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
         StatefulShellBranch(
           routes: [GoRoute(path: '/tabs/account', builder: (_, _) => const Account())],
