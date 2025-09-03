@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:character_squared/components/action_button.dart';
 import 'package:character_squared/db.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart' as m;
 import 'package:go_router/go_router.dart';
 import 'package:tmdb_api_kit/src/models/movie_details_model.dart';
 
@@ -25,6 +26,7 @@ class _DetailsViewState extends State<DetailsView> {
   @override
   void initState() {
     super.initState();
+
     asyncInit();
   }
 
@@ -51,38 +53,38 @@ class _DetailsViewState extends State<DetailsView> {
     if (movieDetails == null) {
       return Center(child: SizedBox(width: 350, child: ProgressBar()));
     }
-    return Column(
-      children: [
-        SizedBox(
-          height: 300,
-          child: Stack(
-            children: [
-              ShaderMask(
-                shaderCallback: (Rect bounds) {
-                  return const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.white, Colors.transparent],
-                  ).createShader(bounds);
-                },
-                blendMode: BlendMode.dstIn, // keeps original colors and applies fade
-                child: CachedNetworkImage(
-                  width: double.maxFinite,
-                  imageUrl: imageUrl(movieDetails!.backdropPath!),
-                  fit: BoxFit.fitWidth,
-                ),
+    return CustomScrollView(
+      slivers: [
+        m.SliverAppBar(
+          pinned: true,
+          expandedHeight: 300.0,
+          actions: [Button(onPressed: openMore, child: Icon(FluentIcons.more))],
+
+          flexibleSpace: m.FlexibleSpaceBar(
+            background: ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.black, Colors.transparent],
+                ).createShader(bounds);
+              },
+              blendMode: BlendMode.dstIn,
+              child: CachedNetworkImage(
+                width: double.maxFinite,
+                height: 300,
+                imageUrl: imageUrl(movieDetails!.backdropPath!),
+                fit: BoxFit.fitWidth,
               ),
-              Positioned(
-                top: 10,
-                left: 10,
-                child: ActionButton(onPressed: context.pop, iconData: FluentIcons.back),
-              ),
-              Positioned(
-                top: 10,
-                right: 10,
-                child: ActionButton(onPressed: openMore, iconData: FluentIcons.more),
-              ),
-            ],
+            ),
+          ),
+        ),
+
+        m.SliverList.list(
+          children: List.generate(
+            20,
+            (i) =>
+                Padding(padding: const EdgeInsets.all(16.0), child: Text("Movie detail line $i")),
           ),
         ),
       ],
