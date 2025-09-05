@@ -3,6 +3,7 @@
 import 'dart:developer' as dev;
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:character_squared/api/tmdb.dart';
 import 'package:character_squared/db.dart';
 import 'package:character_squared/pages/details_view.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -35,7 +36,7 @@ class _SearchState extends State<Search> {
             maxLines: 1,
             placeholder: "Search...",
             onFieldSubmitted: (value) async {
-              final r = await tmdb.searchMovies(query: value);
+              final r = await tmdbKit.searchMovies(query: value);
 
               setState(() {
                 results = r;
@@ -54,7 +55,7 @@ class _SearchState extends State<Search> {
                   height: 100,
                   child: AspectRatio(
                     aspectRatio: 9 / 16,
-                    child: CachedNetworkImage(imageUrl: imageUrl(result.posterPath ?? "")),
+                    child: CachedNetworkImage(imageUrl: MyTmdb.imageUrl(result.posterPath) ?? ""),
                   ),
                 ),
                 title: Text(result.title ?? "ERROR"),

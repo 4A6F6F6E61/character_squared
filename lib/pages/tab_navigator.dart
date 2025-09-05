@@ -28,6 +28,7 @@ class _TabNavigatorState extends State<TabNavigator> {
   Widget build(BuildContext context) {
     return FluentWindow(
       title: "CharacterSquared",
+      windowsEffect: WindowEffect.acrylic,
       child: SafeArea(
         child: Column(
           children: [

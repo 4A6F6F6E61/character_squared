@@ -1,6 +1,7 @@
 import 'dart:developer' as dev;
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:character_squared/api/tmdb.dart';
 import 'package:character_squared/components/action_button.dart';
 import 'package:character_squared/db.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -21,7 +22,7 @@ class DetailsView extends StatefulWidget {
 }
 
 class _DetailsViewState extends State<DetailsView> {
-  MovieDetailsModel? movieDetails;
+  Movie? movie;
 
   @override
   void initState() {
@@ -32,10 +33,10 @@ class _DetailsViewState extends State<DetailsView> {
 
   Future<void> asyncInit() async {
     if (widget.mType == MediaType.film) {
-      final result = await tmdb.getMovieDetails(id: widget.id);
+      final result = await Movie.fromId(widget.id);
       dev.inspect(result);
       setState(() {
-        movieDetails = result;
+        movie = result;
       });
     }
     // TODO: Add everything else
@@ -50,7 +51,7 @@ class _DetailsViewState extends State<DetailsView> {
     if (widget.mType != MediaType.film) {
       return Text("Unsupported");
     }
-    if (movieDetails == null) {
+    if (movie == null) {
       return Center(child: SizedBox(width: 350, child: ProgressBar()));
     }
     return CustomScrollView(
@@ -58,9 +59,10 @@ class _DetailsViewState extends State<DetailsView> {
         m.SliverAppBar(
           pinned: true,
           expandedHeight: 300.0,
+          backgroundColor: Colors.transparent,
           actions: [Button(onPressed: openMore, child: Icon(FluentIcons.more))],
-
           flexibleSpace: m.FlexibleSpaceBar(
+            collapseMode: m.CollapseMode.pin,
             background: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
@@ -73,7 +75,7 @@ class _DetailsViewState extends State<DetailsView> {
               child: CachedNetworkImage(
                 width: double.maxFinite,
                 height: 300,
-                imageUrl: imageUrl(movieDetails!.backdropPath!),
+                imageUrl: movie!.backdropUrl ?? "",
                 fit: BoxFit.fitWidth,
               ),
             ),
@@ -81,11 +83,36 @@ class _DetailsViewState extends State<DetailsView> {
         ),
 
         m.SliverList.list(
-          children: List.generate(
-            20,
-            (i) =>
-                Padding(padding: const EdgeInsets.all(16.0), child: Text("Movie detail line $i")),
-          ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(movie!.title, style: TextStyle(fontSize: 20)),
+                        SizedBox(height: 20),
+                        Text(
+                          "${movie!.release.year}  •  DIRECTED BY",
+                          style: TextStyle(color: Colors.grey[100]),
+                        ),
+                        SizedBox(height: 5),
+                        Text(movie?.director?.name ?? "ERROR"),
+                      ],
+                    ),
+                  ),
+                  CachedNetworkImage(width: 100, imageUrl: movie!.posterUrlHigh ?? ""),
+                ],
+              ),
+            ),
+            ...List.generate(
+              20,
+              (i) =>
+                  Padding(padding: const EdgeInsets.all(16.0), child: Text("Movie detail line $i")),
+            ),
+          ],
         ),
       ],
     );
