@@ -4,12 +4,11 @@ import 'dart:developer' as dev;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:character_squared/api/tmdb.dart';
-import 'package:character_squared/db.dart';
 import 'package:character_squared/pages/details_view.dart';
+import 'package:character_squared/settings.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tmdb_api_kit/src/models/movie_summary_model.dart';
-import 'package:tmdb_api_kit/src/models/popular_movie_response.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -36,7 +35,10 @@ class _SearchState extends State<Search> {
             maxLines: 1,
             placeholder: "Search...",
             onFieldSubmitted: (value) async {
-              final r = await tmdbKit.searchMovies(query: value);
+              final r = await MyTmdb.searchMovies(
+                query: value,
+                includeAdult: Settings.includeAdult,
+              );
 
               setState(() {
                 results = r;

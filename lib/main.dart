@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:character_squared/router.dart';
+import 'package:character_squared/settings.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -19,6 +20,8 @@ Future<void> main() async {
   if (Platform.isWindows) {
     await Window.hideWindowControls();
   }
+
+  await Settings.init();
 
   runApp(const MyApp());
 

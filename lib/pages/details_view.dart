@@ -1,13 +1,9 @@
 import 'dart:developer' as dev;
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:character_squared/api/tmdb.dart';
-import 'package:character_squared/components/action_button.dart';
-import 'package:character_squared/db.dart';
+import 'package:character_squared/api/movie.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:go_router/go_router.dart';
-import 'package:tmdb_api_kit/src/models/movie_details_model.dart';
 
 enum MediaType { film, tv, actor }
 
